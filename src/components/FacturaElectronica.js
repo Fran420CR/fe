@@ -1,13 +1,56 @@
-// AgregarProveedores.js
-import React from 'react';
+// FacturaElectronica.js
+import React, { useState } from 'react';
 
-const FacturaElectronica = () => {
-  return (
-    <div>
-      <h2>Factura Electronica</h2>
-      <p>FE.</p>
-    </div>
-  );
+function FacturaElectronica() {
+  const [codigoSeguridad, setCodigoSeguridad] = useState('');
+  const [codigoActividad, setCodigoActividad] = useState('');
+  const [numeroConsecutivo, setNumeroConsecutivo] = useState('');
+
+  const handleCodigoSeguridad = (event) => {
+    setCodigoSeguridad(event.target.value);
+}
+
+const handleCodigoActividad = (event) => {
+  setCodigoActividad(event.target.value);
+}
+
+const handleNumeroConsecutivo = (event) => {
+  setNumeroConsecutivo(event.target.value);
+}
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  console.log('Factura Electronica agregada:', { codigoSeguridad, codigoActividad, numeroConsecutivo});
+
+  // Limpiamos los campos después de enviar el formulario
+  setCodigoSeguridad('');
+  setCodigoActividad('');
+  setNumeroConsecutivo('');
+}
+
+return (
+  <div className="form-container"> {/* Añadimos una clase contenedora para aplicar estilos */}
+      <h2>Importante</h2>
+      <form onSubmit={handleSubmit}>
+          <div className="form-group">
+              <label className="form-label">Código de Seguridad:</label>
+              <input className="form-input" type="text" value={codigoSeguridad} onChange={handleCodigoSeguridad} />
+          </div>
+          <div className="form-group">
+              <label className="form-label">Código de Actividad:</label>
+              <input className="form-input" type="text" value={codigoActividad} onChange={handleCodigoActividad} />
+          </div>
+          <div className="form-group">
+              <label className="form-label">Número de Consecutivo:</label>
+              <input className="form-input" type="text" value={numeroConsecutivo} onChange={setNumeroConsecutivo} />
+          </div>
+          {/* Emisor */}
+          <h2>Emisor</h2>
+
+          <button type="submit" className="submit-button">Agregar Factura</button>
+      </form>
+  </div>
+);
 }
 
 export default FacturaElectronica;

@@ -78,7 +78,7 @@ function AgregarClientes() {
 
     return (
         <div className="form-container"> {/* Añadimos una clase contenedora para aplicar estilos */}
-            <h2>Agregar Cliente</h2>
+            <h2>Cliente</h2>
             <form onSubmit={handleSubmit}>
                 {/* Cada div envolvente para el input y label se agrega con una clase específica para estilos */}
                 <div className="form-group">

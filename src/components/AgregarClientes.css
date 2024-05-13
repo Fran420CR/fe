@@ -1,0 +1,43 @@
+.form-container {
+    width: 20%; /* Ancho del contenedor del formulario */
+    margin: 50px auto; /* Centrar el formulario con un margen superior e inferior de 50px y centrado horizontal automático */
+    text-align: left;
+}
+
+h2{
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #000;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.submit-button {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #333;
+}

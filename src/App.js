@@ -7,9 +7,6 @@ import AgregarProveedores from './components/AgregarProveedores';
 import FacturaElectronica from './components/FacturaElectronica';
 import './App.css';
 
-
-const styles = {  };
-
 function App() {
   return (
     <Router>

@@ -1,6 +1,5 @@
 // AgregarClientes.js
 import React, { useState } from 'react';
-import './AgregarClientes.css'; // Importamos el archivo CSS para los estilos
 
 function AgregarClientes() {
     const [nombre, setNombre] = useState('');

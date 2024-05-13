@@ -78,7 +78,7 @@ function AgregarProveedores() {
 
     return (
         <div className="form-container"> {/* Añadimos una clase contenedora para aplicar estilos */}
-            <h2>Proveedor</h2>
+            <h2>Agregar Proveedor</h2>
             <form onSubmit={handleSubmit}>
                 {/* Cada div envolvente para el input y label se agrega con una clase específica para estilos */}
                 <div className="form-group">
@@ -125,7 +125,7 @@ function AgregarProveedores() {
                     <label className="form-label">Email:</label>
                     <input className="form-input" type="email" value={email} onChange={handleEmailChange} />
                 </div>
-                <button type="submit" className="submit-button">Agregar Cliente</button>
+                <button type="submit" className="submit-button">Agregar Proveedor</button>
             </form>
         </div>
     );

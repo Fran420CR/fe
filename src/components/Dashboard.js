@@ -7,7 +7,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <h1>Dashboard Mieo</h1>
+      <h1>Facturación Electrónica</h1>
       <nav>
         <ul className="dashboard-options">
           <li><Link to="/agregar-clientes" className={location.pathname === '/agregar-clientes' ? 'active' : ''}>Agregar Clientes</Link></li>

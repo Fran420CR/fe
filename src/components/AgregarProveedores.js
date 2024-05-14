@@ -78,7 +78,7 @@ function AgregarProveedores() {
         };
 
         try {
-            const response = await fetch('http://localhost:3001/agregarProveedores', {
+            const response = await fetch('http://localhost:3001/agregarProveedor', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 
 function AgregarClientes() {
     const [nombre, setNombre] = useState('');
-    const [tipoID, setTipoID] = useState('');
-    const [ID, setID] = useState('');
+    const [tipoCed, setTipocedula] = useState('');
+    const [cedula, setcedula] = useState('');
     const [nombreComercial, setNombreComercial] = useState('');
     const [provincia, setProvincia] = useState('');
     const [canton, setCanton] = useState('');
@@ -14,16 +14,18 @@ function AgregarClientes() {
     const [telefono, setTelefono] = useState('');
     const [email, setEmail] = useState('');
 
+    const [responseMessage, setResponseMessage] = useState('');
+
     const handleNombreChange = (event) => {
         setNombre(event.target.value);
     }
 
-    const handleTipoIDChange = (event) => {
-        setTipoID(event.target.value);
+    const handleTipocedulaChange = (event) => {
+        setTipocedula(event.target.value);
     }
 
-    const handleIDChange = (event) => {
-        setID(event.target.value);
+    const handleCedulaChange = (event) => {
+        setcedula(event.target.value);
     }
 
     const handleNombreComercialChange = (event) => {
@@ -58,23 +60,58 @@ function AgregarClientes() {
         setEmail(event.target.value);
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('Cliente agregado:', { nombre, tipoID, ID, nombreComercial, provincia, canton, distrito, otrasSenas, codigoPaisReceptor, telefono, email });
 
-        // Limpiamos los campos después de enviar el formulario
-        setNombre('');
-        setTipoID('');
-        setID('');
-        setNombreComercial('');
-        setProvincia('');
-        setCanton('');
-        setDistrito('');
-        setOtrasSenas('');
-        setCodigoPaisReceptor('');
-        setTelefono('');
-        setEmail('');
+        const data = {
+            nombre,
+            tipoCed,
+            cedula,
+            nombreComercial,
+            provincia,
+            canton,
+            distrito,
+            otrasSenas,
+            codigoPaisReceptor,
+            telefono,
+            email
+        };
+
+        try {
+            const response = await fetch('http://localhost:3001/agregarCliente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+
+            if (response.ok) {
+                const responseData = await response.json();
+                setResponseMessage(responseData.message || 'Cliente agregado exitosamente');
+                // Limpiar campos después de una respuesta exitosa si es necesario
+                setNombre('');
+                setTipocedula('');
+                setcedula('');
+                setNombreComercial('');
+                setProvincia('');
+                setCanton('');
+                setDistrito('');
+                setOtrasSenas('');
+                setCodigoPaisReceptor('');
+                setTelefono('');
+                setEmail('');
+            } else {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al agregar cliente');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setResponseMessage(error.message || 'Error al procesar la solicitud');
+        }
     }
+
 
     return (
         <div className="form-container"> {/* Añadimos una clase contenedora para aplicar estilos */}
@@ -86,12 +123,12 @@ function AgregarClientes() {
                     <input className="form-input" type="text" value={nombre} onChange={handleNombreChange} />
                 </div>
                 <div className="form-group">
-                    <label className="form-label">Tipo ID:</label>
-                    <input className="form-input" type="text" value={tipoID} onChange={handleTipoIDChange} />
+                    <label className="form-label">Tipo cédula:</label>
+                    <input className="form-input" type="text" value={tipoCed} onChange={handleTipocedulaChange} />
                 </div>
                 <div className="form-group">
-                    <label className="form-label">ID:</label>
-                    <input className="form-input" type="text" value={ID} onChange={handleIDChange} />
+                    <label className="form-label">Cédula:</label>
+                    <input className="form-input" type="text" value={cedula} onChange={handleCedulaChange} />
                 </div>
                 <div className="form-group">
                     <label className="form-label">Nombre Comercial:</label>

@@ -5,7 +5,64 @@ function FacturaElectronica() {
   const [codigoActividad, setCodigoActividad] = useState('');
   const [numeroConsecutivo, setNumeroConsecutivo] = useState('');
   const [cedulaEmisor, setCedulaEmisor] = useState('');
-  const [cedulaReceptor, setCedulaReceptor] = useState(''); // Variable cedulaReceptor agregada
+  const [cedulaReceptor, setCedulaReceptor] = useState('');
+  const [codMoneda, setCodMoneda] = useState('');
+  const [tipoCambio, setTipoCambio] = useState('');
+  const [totalServGravados, setTotalServGravados] = useState('');
+  const [totalGravados, setTotalGravados] = useState('');
+  const [totalVentas, setTotalVentas] = useState('');
+  const [totalVentasNeta, setTotalVentasNeta] = useState('');
+  const [totalImpuestos, setTotalImpuestos] = useState('');
+  const [totalComprobante, setTotalComprobante] = useState('');
+
+  const [tabla, setTabla] = useState([{
+    codigo: '',
+    codigoComercial: '',
+    tipo: '',
+    cantidad: '',
+    unidadMedida: '',
+    unidadMedidaComercial: '',
+    detalle: '',
+    precioUnitario: '',
+    montoTotal: '',
+    subtotal: '',
+    impuesto: {
+      codigo: '',
+      tarifa: '',
+      monto: ''
+    }
+  }]);
+
+  const handleInputChange = (index, event) => {
+    const values = [...tabla];
+    if (event.target.name === "codigo" || event.target.name === "tarifa" || event.target.name === "monto") {
+      values[index]['impuesto'][event.target.name] = event.target.value;
+    } else {
+      values[index][event.target.name] = event.target.value;
+    }
+    setTabla(values);
+  };
+
+  const handleAddRow = () => {
+    setTabla([...tabla, {
+      codigo: '',
+      codigoComercial: '',
+      tipo: '',
+      cantidad: '',
+      unidadMedida: '',
+      unidadMedidaComercial: '',
+      detalle: '',
+      precioUnitario: '',
+      montoTotal: '',
+      subtotal: '',
+      impuesto: {
+        codigo: '',
+        tarifa: '',
+        monto: ''
+      }
+    }]);
+  };
+
 
   const handleCodigoSeguridad = (event) => {
     setCodigoSeguridad(event.target.value);
@@ -23,24 +80,79 @@ function FacturaElectronica() {
     setCedulaEmisor(event.target.value);
   }
 
-  const handleCedulaReceptor = (event) => { // Manejador para cedulaReceptor
+  const handleCedulaReceptor = (event) => {
     setCedulaReceptor(event.target.value);
+  }
+
+  const handleCodMoneda = (event) => {
+    setCodMoneda(event.target.value);
+  }
+
+  const handleTipoCambio = (event) => {
+    setTipoCambio(event.target.value);
+  }
+
+  const handleTotalServGravados = (event) => {
+    setTotalServGravados(event.target.value);
+  }
+
+  const handleTotalGravados = (event) => {
+    setTotalGravados(event.target.value);
+  }
+
+  const handleTotalVentas = (event) => {
+    setTotalVentas(event.target.value);
+  }
+
+  const handleTotalVentasNeta = (event) => {
+    setTotalVentasNeta(event.target.value);
+  }
+
+  const handleTotalImpuestos = (event) => {
+    setTotalImpuestos(event.target.value);
+  }
+
+  const handleTotalComprobante = (event) => {
+    setTotalComprobante(event.target.value);
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Factura Electronica agregada:', { codigoSeguridad, codigoActividad, numeroConsecutivo, cedulaEmisor, cedulaReceptor });
+    console.log('Factura Electronica agregada:', {
+      codigoSeguridad,
+      codigoActividad,
+      numeroConsecutivo,
+      cedulaEmisor,
+      cedulaReceptor,
+      codMoneda,
+      tipoCambio,
+      totalServGravados,
+      totalGravados,
+      totalVentas,
+      totalVentasNeta,
+      totalImpuestos,
+      totalComprobante,
+      tabla
+    });
 
     // Limpiamos los campos después de enviar el formulario
     setCodigoSeguridad('');
     setCodigoActividad('');
     setNumeroConsecutivo('');
     setCedulaEmisor('');
-    setCedulaReceptor(''); // Se agrega limpiar cedulaReceptor
+    setCedulaReceptor('');
+    setCodMoneda('');
+    setTipoCambio('');
+    setTotalServGravados('');
+    setTotalGravados('');
+    setTotalVentas('');
+    setTotalVentasNeta('');
+    setTotalImpuestos('');
+    setTotalComprobante('');
   }
 
   return (
-    <div className="form-container"> {/* Añadimos una clase contenedora para aplicar estilos */}
+    <div className="form-container">
       <h2>Importante</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -55,20 +167,91 @@ function FacturaElectronica() {
           <label className="form-label">Número de Consecutivo:</label>
           <input className="form-input" type="text" value={numeroConsecutivo} onChange={handleNumeroConsecutivo} />
         </div>
-        {/* Emisor */}
         <h2>Emisor</h2>
         <div className="form-group">
           <label className="form-label">Cédula del Emisor:</label>
           <input className="form-input" type="text" value={cedulaEmisor} onChange={handleCedulaEmisor} />
         </div>
-        {/* Receptor */}
         <h2>Receptor</h2>
         <div className="form-group">
           <label className="form-label">Cédula del Receptor:</label>
           <input className="form-input" type="text" value={cedulaReceptor} onChange={handleCedulaReceptor} />
         </div>
-        {/* Detalle del Servicio */}
-        <h2>Detalle del Servicio</h2>
+        <h2>Resumen de la Factura</h2>
+        <div className="form-group">
+          <label className="form-label">Código de Moneda:</label>
+          <input className="form-input" type="text" value={codMoneda} onChange={handleCodMoneda} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Tipo de Cambio:</label>
+          <input className="form-input" type="text" value={tipoCambio} onChange={handleTipoCambio} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total de Servicios Gravados:</label>
+          <input className="form-input" type="text" value={totalServGravados} onChange={handleTotalServGravados} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total Gravados:</label>
+          <input className="form-input" type="text" value={totalGravados} onChange={handleTotalGravados} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total de Ventas:</label>
+          <input className="form-input" type="text" value={totalVentas} onChange={handleTotalVentas} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total de Ventas Neta:</label>
+          <input className="form-input" type="text" value={totalVentasNeta} onChange={handleTotalVentasNeta} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total de Impuestos:</label>
+          <input className="form-input" type="text" value={totalImpuestos} onChange={handleTotalImpuestos} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total del Comprobante:</label>
+          <input className="form-input" type="text" value={totalComprobante} onChange={handleTotalComprobante} />
+        </div>
+        <div className="form-container-table">
+          <h2>Tabla</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Código Comercial</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Unidad de Medida</th>
+                <th>Unidad de Medida Comercial</th>
+                <th>Detalle</th>
+                <th>Precio Unitario</th>
+                <th>Monto Total</th>
+                <th>Subtotal</th>
+                <th>Código de Impuesto</th>
+                <th>Tarifa de Impuesto</th>
+                <th>Monto de Impuesto</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tabla.map((item, index) => (
+                <tr key={index}>
+                  <td><input type="text" name="codigo" value={item.impuesto.codigo} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="codigoComercial" value={item.codigoComercial} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="tipo" value={item.tipo} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="cantidad" value={item.cantidad} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="unidadMedida" value={item.unidadMedida} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="unidadMedidaComercial" value={item.unidadMedidaComercial} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="detalle" value={item.detalle} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="precioUnitario" value={item.precioUnitario} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="montoTotal" value={item.montoTotal} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="subtotal" value={item.subtotal} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="tarifa" value={item.impuesto.tarifa} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="monto" value={item.impuesto.monto} onChange={event => handleInputChange(index, event)} /></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button onClick={handleAddRow}>Agregar fila</button>
+        </div>
+
 
         <button type="submit" className="submit-button">Agregar Factura</button>
       </form>

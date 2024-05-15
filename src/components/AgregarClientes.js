@@ -15,6 +15,7 @@ function AgregarClientes() {
     const [email, setEmail] = useState('');
 
     const [responseMessage, setResponseMessage] = useState('');
+    const [isError, setIsError] = useState(false);  
 
     const handleNombreChange = (event) => {
         setNombre(event.target.value);
@@ -90,6 +91,7 @@ function AgregarClientes() {
             if (response.ok) {
                 const responseData = await response.json();
                 setResponseMessage(responseData.message || 'Cliente agregado exitosamente');
+                setIsError(false);
                 // Limpiar campos después de una respuesta exitosa si es necesario
                 setNombre('');
                 setTipocedula('');
@@ -109,7 +111,13 @@ function AgregarClientes() {
         } catch (error) {
             console.error('Error:', error);
             setResponseMessage(error.message || 'Error al procesar la solicitud');
+            setIsError(true);
         }
+
+        setTimeout(() => {
+            setResponseMessage('');
+            setIsError(true);
+        }, 3000);
     }
 
 
@@ -161,6 +169,9 @@ function AgregarClientes() {
                 <div className="form-group">
                     <label className="form-label">Email:</label>
                     <input className="form-input" type="email" value={email} onChange={handleEmailChange} />
+                </div>
+                <div className={`response-message ${isError ? 'error' : 'success'} ${responseMessage && 'show'}`}>
+                    {responseMessage && <p>{responseMessage}</p>}
                 </div>
                 <button type="submit" className="submit-button">Agregar Cliente</button>
             </form>

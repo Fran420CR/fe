@@ -15,6 +15,32 @@ function FacturaElectronica() {
   const [totalImpuestos, setTotalImpuestos] = useState('');
   const [totalComprobante, setTotalComprobante] = useState('');
 
+  /*
+  const [clientes, setClientes] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3001/datosClientes')
+      .then(response => response.json())
+      .then(data => {
+        console.log('Datos de clientes obtenidos:', data);
+        setClientes(data);
+      })
+      .catch(error => console.error('Error al obtener los datos de clientes:', error));
+  }, []);*/
+
+  const handleConsultarCliente = () => {
+    // Realizar la solicitud de datos del cliente utilizando cedulaReceptor
+    fetch(`http://localhost:3001/datosCliente?cedula=${cedulaReceptor}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log('Datos del cliente obtenidos:', data);
+        // Actualizar el estado con los datos del receptor obtenidos
+        // (puedes manejar esta lógica de acuerdo a tus necesidades)
+      })
+      .catch(error => console.error('Error al obtener los datos del cliente:', error));
+  };
+  
+  
   const [tabla, setTabla] = useState([{
     codigo: '',
     codigoComercial: '',
@@ -176,6 +202,7 @@ function FacturaElectronica() {
         <div className="form-group">
           <label className="form-label">Cédula del Receptor:</label>
           <input className="form-input" type="text" value={cedulaReceptor} onChange={handleCedulaReceptor} />
+          <button type="button" onClick={handleConsultarCliente}>Consultar Receptor</button>
         </div>
         <h2>Resumen de la Factura</h2>
         <div className="form-group">

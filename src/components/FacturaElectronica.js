@@ -30,6 +30,11 @@ function FacturaElectronica() {
   const [totalVentasNeta, setTotalVentasNeta] = useState('');
   const [totalImpuestos, setTotalImpuestos] = useState('');
   const [totalComprobante, setTotalComprobante] = useState('');
+  const [datosClienteProveedor, setDatosClienteProveedor] = useState({
+    cliente: null,
+    proveedor: null
+  });
+
 
   const handleConsultarCliente = () => {
     // Realizar la solicitud de datos del cliente utilizando cedulaReceptor
@@ -37,8 +42,10 @@ function FacturaElectronica() {
       .then(response => response.json())
       .then(data => {
         console.log('Datos del cliente obtenidos:', data);
-        // Actualizar el estado con los datos del receptor obtenidos
-        // (puedes manejar esta lógica de acuerdo a tus necesidades)
+        setDatosClienteProveedor(prevState => ({
+          ...prevState,
+          cliente: data
+        }));
       })
       .catch(error => console.error('Error al obtener los datos del cliente:', error));
   };
@@ -49,11 +56,14 @@ function FacturaElectronica() {
       .then(response => response.json())
       .then(data => {
         console.log('Datos del proveedor obtenidos:', data);
-        // Actualizar el estado con los datos del receptor obtenidos
-        // (puedes manejar esta lógica de acuerdo a tus necesidades)
+        setDatosClienteProveedor(prevState => ({
+          ...prevState,
+          proveedor: data
+        }));
       })
       .catch(error => console.error('Error al obtener los datos del proveedor:', error));
   };
+
 
   const handleCodigoSeguridad = (event) => {
     setCodigoSeguridad(event.target.value);
@@ -188,6 +198,72 @@ function FacturaElectronica() {
       totalImpuestos,
       totalComprobante,
     });
+
+    const formData = {
+      //MODULO Y ACCION
+      w: "genXML",
+      r: "gen_xml_fe",
+      // DATA
+      codigoSeguridad,
+      codigo_actividad: codigoActividad,
+      numeroConsecutivo,
+      // EMISOR
+      emisor_nombre: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.nombre : '',
+      emisor_tipo_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.tipo_identificacion : '',
+      emisor_num_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.numero_identificacion : '',
+      emisor_nombre_comercial: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.nombreComercial : '',
+      emisor_provincia: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.provincia : '',
+      emisor_canton: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.canton : '',
+      emisor_distrito: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.distrito : '',
+      emisor_otras_senas: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.otrasSenas : '',
+      emisor_cod_pais_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.codigoPaisReceptor : '',
+      emisor_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.telefono : '',
+      emisor_email: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.email : '',
+      // RECEPTOR
+      receptor_nombre: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.nombre : '',
+      receptor_tipo_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.tipo_identificacion : '',
+      receptor_num_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.numero_identificacion : '',
+      receptor_nombre_comercial: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.nombreComercial : '',
+      receptor_provincia: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.provincia : '',
+      receptor_canton: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.canton : '',
+      receptor_distrito: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.distrito : '',
+      receptor_otras_senas: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.otrasSenas : '',
+      receptor_cod_pais_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.codigoPaisReceptor : '',
+      receptor_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.telefono : '',
+      receptor_email: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.email : '',
+      // RESUMEN FACTURA
+      codMoneda,
+      tipoCambio,
+      totalServGravados,
+      totalGravados,
+      totalVentas,
+      totalVentasNeta,
+      totalImpuestos,
+      totalComprobante,
+
+      numeroLinea: numeroLinea,
+      codigoServicio: codigoServicio,
+      codigoComercial: codigoComercial,
+      tipoCodCom: tipoCodCom,
+      codigoC: codigoComercial,
+      cantidad: cantidad,
+      unidadMedida: unidadMedida,
+      unidadMedidaComercial: unidadMedidaComercial,
+      detalle: detalle,
+      precioUnitario: precioUnitario,
+      montoTotal: montoTotal,
+      subtotal: subtotal,
+      impuesto: {
+        codigo: impuestoCodigo,
+        tarifa: impuestoTarifa,
+        monto: impuestoMonto
+      },
+      montoTotalLinea: montoTotalLinea,
+      impuestoNeto: impuestoNeto
+
+      // Completar los datos del emisor y del receptor con los datos almacenados en la variable global
+
+    };
 
     // Limpiamos los campos después de enviar el formulario
     setCodigoSeguridad('');

@@ -71,7 +71,7 @@
 
 
   .form-container {
-    width: 20%; /* Ancho del contenedor del formulario */
+    width: 35%; /* Ancho del contenedor del formulario */
     margin: 50px auto; /* Centrar el formulario con un margen superior e inferior de 50px y centrado horizontal automático */
     text-align: left;
 }
@@ -137,5 +137,13 @@ h2{
 }
 
 
+/* div {
+  border: 1px solid black;
+  margin: 5%;
+} */
 
-
+.col {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

@@ -120,7 +120,9 @@ h2{
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw; /* Ancho total de la ventana */
+  margin: 2% auto; /* Margen del 2% del ancho de la ventana con centrado horizontal automático */
+  width: 96%; /* Ancho del 96% del contenedor */
+  max-width: 800px; /* Ancho máximo de 800px para que no se expanda demasiado en pantallas grandes */
   height: 100vh; /* Altura total de la ventana */
 }
 
@@ -133,3 +135,7 @@ h2{
 .form-container-table div input {
   margin: 0 10px;
 }
+
+
+
+

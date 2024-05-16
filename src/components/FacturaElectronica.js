@@ -42,9 +42,11 @@ function FacturaElectronica() {
   
   
   const [tabla, setTabla] = useState([{
-    codigo: '',
+    numeroLinea: '',
+    code: '',
     codigoComercial: '',
     tipo: '',
+    codigo: '',
     cantidad: '',
     unidadMedida: '',
     unidadMedidaComercial: '',
@@ -56,7 +58,10 @@ function FacturaElectronica() {
       codigo: '',
       tarifa: '',
       monto: ''
-    }
+    },
+    montoTotalLinea: '',
+    impuestoNeto: ''
+
   }]);
 
   const handleInputChange = (index, event) => {
@@ -71,9 +76,11 @@ function FacturaElectronica() {
 
   const handleAddRow = () => {
     setTabla([...tabla, {
-      codigo: '',
+      numeroLinea: '',
+      code: '',
       codigoComercial: '',
       tipo: '',
+      codigo: '',
       cantidad: '',
       unidadMedida: '',
       unidadMedidaComercial: '',
@@ -85,7 +92,9 @@ function FacturaElectronica() {
         codigo: '',
         tarifa: '',
         monto: ''
-      }
+      },
+      montoTotalLinea: '',
+      impuestoNeto: ''
     }]);
   };
 
@@ -237,32 +246,36 @@ function FacturaElectronica() {
           <label className="form-label">Total del Comprobante:</label>
           <input className="form-input" type="text" value={totalComprobante} onChange={handleTotalComprobante} />
         </div>
-        <div className="form-container-table">
+        <div className="form-container-table" id="tabla">
           <h2>Tabla</h2>
           <table>
             <thead>
               <tr>
+                <th>Número Línea</th>
                 <th>Código</th>
+                <th>Tipo Cod Com</th>
                 <th>Código Comercial</th>
-                <th>Tipo</th>
                 <th>Cantidad</th>
                 <th>Unidad de Medida</th>
                 <th>Unidad de Medida Comercial</th>
                 <th>Detalle</th>
                 <th>Precio Unitario</th>
                 <th>Monto Total</th>
-                <th>Subtotal</th>
+                <th>SubTotal</th>
                 <th>Código de Impuesto</th>
                 <th>Tarifa de Impuesto</th>
                 <th>Monto de Impuesto</th>
+                <th>Monto Total Linea</th>
+                <th>Impuesto Neto</th>
               </tr>
             </thead>
             <tbody>
               {tabla.map((item, index) => (
                 <tr key={index}>
-                  <td><input type="text" name="codigo" value={item.impuesto.codigo} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="numeroLinea" value={item.numeroLinea} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="codigo" value={item.code} onChange={event => handleInputChange(index, event)} /></td>
                   <td><input type="text" name="codigoComercial" value={item.codigoComercial} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="tipo" value={item.tipo} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="tipoCodCom" value={item.tipo} onChange={event => handleInputChange(index, event)} /></td>
                   <td><input type="text" name="cantidad" value={item.cantidad} onChange={event => handleInputChange(index, event)} /></td>
                   <td><input type="text" name="unidadMedida" value={item.unidadMedida} onChange={event => handleInputChange(index, event)} /></td>
                   <td><input type="text" name="unidadMedidaComercial" value={item.unidadMedidaComercial} onChange={event => handleInputChange(index, event)} /></td>
@@ -270,8 +283,11 @@ function FacturaElectronica() {
                   <td><input type="text" name="precioUnitario" value={item.precioUnitario} onChange={event => handleInputChange(index, event)} /></td>
                   <td><input type="text" name="montoTotal" value={item.montoTotal} onChange={event => handleInputChange(index, event)} /></td>
                   <td><input type="text" name="subtotal" value={item.subtotal} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="codigoImpuesto" value={item.impuesto.codigo} onChange={event => handleInputChange(index, event)} /></td>
                   <td><input type="text" name="tarifa" value={item.impuesto.tarifa} onChange={event => handleInputChange(index, event)} /></td>
                   <td><input type="text" name="monto" value={item.impuesto.monto} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="montoTotalLinea" value={item.montoTotalLinea} onChange={event => handleInputChange(index, event)} /></td>
+                  <td><input type="text" name="impuestoNeto" value={item.impuestoNeto} onChange={event => handleInputChange(index, event)} /></td>
                 </tr>
               ))}
             </tbody>

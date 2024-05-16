@@ -39,6 +39,18 @@ function FacturaElectronica() {
       })
       .catch(error => console.error('Error al obtener los datos del cliente:', error));
   };
+
+  const handleConsultarProveedor = () => {
+    // Realizar la solicitud de datos del cliente utilizando cedulaReceptor
+    fetch(`http://localhost:3001/datosProveedor?cedula=${cedulaEmisor}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log('Datos del proveedor obtenidos:', data);
+        // Actualizar el estado con los datos del receptor obtenidos
+        // (puedes manejar esta lógica de acuerdo a tus necesidades)
+      })
+      .catch(error => console.error('Error al obtener los datos del proveedor:', error));
+  };
   
   
   const [tabla, setTabla] = useState([{
@@ -206,6 +218,7 @@ function FacturaElectronica() {
         <div className="form-group">
           <label className="form-label">Cédula del Emisor:</label>
           <input className="form-input" type="text" value={cedulaEmisor} onChange={handleCedulaEmisor} />
+          <button type="button" onClick={handleConsultarProveedor}>Consultar Proveedor</button>
         </div>
         <h2>Receptor</h2>
         <div className="form-group">

@@ -199,87 +199,186 @@ function FacturaElectronica() {
       totalComprobante,
     });
 
-    const formData = {
-      //MODULO Y ACCION
-      w: "genXML",
-      r: "gen_xml_fe",
-      // DATA
-      codigoSeguridad,
-      codigo_actividad: codigoActividad,
-      numeroConsecutivo,
-      // EMISOR
-      emisor_nombre: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.nombre : '',
-      emisor_tipo_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.tipo_identificacion : '',
-      emisor_num_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.numero_identificacion : '',
-      emisor_nombre_comercial: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.nombreComercial : '',
-      emisor_provincia: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.provincia : '',
-      emisor_canton: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.canton : '',
-      emisor_distrito: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.distrito : '',
-      emisor_otras_senas: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.otrasSenas : '',
-      emisor_cod_pais_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.codigoPaisReceptor : '',
-      emisor_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.telefono : '',
-      emisor_email: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.email : '',
-      // RECEPTOR
-      receptor_nombre: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.nombre : '',
-      receptor_tipo_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.tipo_identificacion : '',
-      receptor_num_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.numero_identificacion : '',
-      receptor_nombre_comercial: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.nombreComercial : '',
-      receptor_provincia: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.provincia : '',
-      receptor_canton: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.canton : '',
-      receptor_distrito: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.distrito : '',
-      receptor_otras_senas: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.otrasSenas : '',
-      receptor_cod_pais_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.codigoPaisReceptor : '',
-      receptor_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.telefono : '',
-      receptor_email: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.email : '',
-      // RESUMEN FACTURA
-      codMoneda,
-      tipoCambio,
-      totalServGravados,
-      totalGravados,
-      totalVentas,
-      totalVentasNeta,
-      totalImpuestos,
-      totalComprobante,
-
-      numeroLinea: numeroLinea,
-      codigoServicio: codigoServicio,
-      codigoComercial: codigoComercial,
-      tipoCodCom: tipoCodCom,
-      codigoC: codigoComercial,
-      cantidad: cantidad,
-      unidadMedida: unidadMedida,
-      unidadMedidaComercial: unidadMedidaComercial,
-      detalle: detalle,
-      precioUnitario: precioUnitario,
-      montoTotal: montoTotal,
-      subtotal: subtotal,
-      impuesto: {
-        codigo: impuestoCodigo,
-        tarifa: impuestoTarifa,
-        monto: impuestoMonto
-      },
-      montoTotalLinea: montoTotalLinea,
-      impuestoNeto: impuestoNeto
-
-      // Completar los datos del emisor y del receptor con los datos almacenados en la variable global
-
+    let clave = "";
+    const claveData = {
+      w: "clave",
+      r: "clave",
+      tipoCedula: "fisico",
+      cedula: "54654654",
+      codigoPais: "506",
+      consecutivo: numeroConsecutivo,
+      situacion: "normal",
+      codigoSeguridad: codigoSeguridad,
+      tipoDocumento: "FE",
+      terminal: "00001",
+      sucursal: "001"
     };
 
+    solicitarClave(claveData).then(response => {
+      console.log(response);
+      try {
+        clave = response.resp.clave;
+        const formData = {
+          //MODULO Y ACCION
+          w: "genXML",
+          r: "gen_xml_fe",
+          // DATA
+          clave: clave,
+          codigo_actividad: codigoActividad,
+          consecutivo: numeroConsecutivo,
+          fecha_emision: "2024-04-03T15:42:17-06:00",
+          // EMISOR
+          emisor_nombre: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Nombre : '',
+          emisor_tipo_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.TipoCed : '',
+          emisor_num_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Cedula : '',
+          emisor_nombre_comercial: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.NombreComercial : '',
+          emisor_provincia: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Provincia : '',
+          emisor_canton: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Canton : '',
+          emisor_distrito: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Distrito : '',
+          emisor_otras_senas: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.OtrasSenas : '',
+          emisor_cod_pais_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.CodigoPaisReceptor : '',
+          emisor_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Telefono : '',
+          emisor_email: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Email : '',
+          // RECEPTOR
+          receptor_nombre: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Nombre : '',
+          receptor_tipo_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.TipoCed : '',
+          receptor_num_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Cedula : '',
+          receptor_nombre_comercial: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.NombreComercial : '',
+          receptor_provincia: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Provincia : '',
+          receptor_canton: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Canton : '',
+          receptor_distrito: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Distrito : '',
+          receptor_otras_senas: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.OtrasSenas : '',
+          receptor_cod_pais_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.CodigoPaisReceptor : '',
+          receptor_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Telefono : '',
+          receptor_email: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Email : '',
+          // RESUMEN FACTURA
+          cod_moneda: codMoneda,
+          tipo_cambio: tipoCambio,
+          total_serv_gravados: totalServGravados,
+          totalGravados: totalGravados,
+          total_ventas: totalVentas,
+          total_ventas_neta: totalVentasNeta,
+          total_impuestos: totalImpuestos,
+          total_comprobante: totalComprobante,
+
+          detalles: {
+            1: {
+              numeroLinea: numeroLinea,
+              codigo: codigoServicio,
+              codigoComercial: [
+                {
+                  tipo: tipoCodCom,
+                  codigo: codigoComercial
+                }
+              ],
+              cantidad: cantidad,
+              unidadMedida: unidadMedida,
+              unidadMedidaComercial: unidadMedidaComercial,
+              detalle: detalle,
+              precioUnitario: precioUnitario,
+              montoTotal: montoTotal,
+              subtotal: subtotal,
+              impuesto: {
+                1: {
+                  codigo: impuestoCodigo,
+                  tarifa: impuestoTarifa,
+                  monto: impuestoMonto
+                }
+              },
+              montoTotalLinea: montoTotalLinea,
+              impuestoNeto: impuestoNeto
+            }
+          }
+
+
+          // Completar los datos del emisor y del receptor con los datos almacenados en la variable global
+
+        };
+
+        console.log(formData);
+
+        formData.detalles = JSON.stringify(formData.detalles);
+
+        const jsonFormData = JSON.stringify(formData);
+
+        console.log(jsonFormData);
+
+         enviarJSON(formData);
+      } catch (error) {
+        console.error("Error al analizar la respuesta:", error);
+      }
+    }).catch(error => {
+      console.error(error);
+    });
+
+
+
     // Limpiamos los campos después de enviar el formulario
-    setCodigoSeguridad('');
-    setCodigoActividad('');
-    setNumeroConsecutivo('');
-    setCedulaEmisor('');
-    setCedulaReceptor('');
-    setCodMoneda('');
-    setTipoCambio('');
-    setTotalServGravados('');
-    setTotalGravados('');
-    setTotalVentas('');
-    setTotalVentasNeta('');
-    setTotalImpuestos('');
-    setTotalComprobante('');
+    // setCodigoSeguridad('');
+    // setCodigoActividad('');
+    // setNumeroConsecutivo('');
+    // setCedulaEmisor('');
+    // setCedulaReceptor('');
+    // setCodMoneda('');
+    // setTipoCambio('');
+    // setTotalServGravados('');
+    // setTotalGravados('');
+    // setTotalVentas('');
+    // setTotalVentasNeta('');
+    // setTotalImpuestos('');
+    // setTotalComprobante('');
   }
+
+  async function enviarJSON(formData) {
+
+    const url = "http://localhost/APIHacienda/www/api.php";
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar los datos');
+      }
+
+      const jsonResponse = await response.json();
+      console.log('Respuesta del servidor:', jsonResponse);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  async function solicitarClave(claveData) {
+    const url = "http://localhost/APIHacienda/www/api.php";
+    let jsonResponse = null;
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(claveData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar los datos');
+      }
+
+      jsonResponse = await response.json();
+      console.log('Respuesta del servidor:', jsonResponse);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
+    return jsonResponse;
+  }
+
 
   return (
     <div className="form-container">

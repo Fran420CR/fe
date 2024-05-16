@@ -10,7 +10,6 @@ function FacturaElectronica() {
   const [codigoServicio, setCodigoServicio] = useState('');
   const [codigoComercial, setCodigoComercial] = useState('');
   const [tipoCodCom, setTipoCodCom] = useState('');
-  const [codigo, setCodigo] = useState('');
   const [cantidad, setCantidad] = useState('');
   const [unidadMedida, setUnidadMedida] = useState('');
   const [unidadMedidaComercial, setUnidadMedidaComercial] = useState('');
@@ -18,30 +17,19 @@ function FacturaElectronica() {
   const [precioUnitario, setPrecioUnitario] = useState('');
   const [montoTotal, setMontoTotal] = useState('');
   const [subtotal, setSubtotal] = useState('');
-  const [impuesto, setImpuesto] = useState({ codigo: '', tarifa: '', monto: '' });
+  const [impuestoCodigo, setImpuestoCodigo] = useState('');
+  const [impuestoTarifa, setImpuestoTarifa] = useState('');
+  const [impuestoMonto, setImpuestoMonto] = useState('');
   const [montoTotalLinea, setMontoTotalLinea] = useState('');
   const [impuestoNeto, setImpuestoNeto] = useState('');
   const [codMoneda, setCodMoneda] = useState('');
-  const [tipoCodComCambio, settipoCodComCambio] = useState('');
+  const [tipoCambio, setTipoCambio] = useState('');
   const [totalServGravados, setTotalServGravados] = useState('');
   const [totalGravados, setTotalGravados] = useState('');
   const [totalVentas, setTotalVentas] = useState('');
   const [totalVentasNeta, setTotalVentasNeta] = useState('');
   const [totalImpuestos, setTotalImpuestos] = useState('');
   const [totalComprobante, setTotalComprobante] = useState('');
-
-  /*
-  const [clientes, setClientes] = useState([]);
-
-  useEffect(() => {
-    fetch('http://localhost:3001/datosClientes')
-      .then(response => response.json())
-      .then(data => {
-        console.log('Datos de clientes obtenidos:', data);
-        setClientes(data);
-      })
-      .catch(error => console.error('Error al obtener los datos de clientes:', error));
-  }, []);*/
 
   const handleConsultarCliente = () => {
     // Realizar la solicitud de datos del cliente utilizando cedulaReceptor
@@ -66,65 +54,6 @@ function FacturaElectronica() {
       })
       .catch(error => console.error('Error al obtener los datos del proveedor:', error));
   };
-  
-  
-  const [tabla, setTabla] = useState([{
-    numeroLinea: '',
-    codigoServicio: '',
-    codigoComercial: '',
-    tipoCodCom: '',
-    codigo: '',
-    cantidad: '',
-    unidadMedida: '',
-    unidadMedidaComercial: '',
-    detalle: '',
-    precioUnitario: '',
-    montoTotal: '',
-    subtotal: '',
-    impuesto: {
-      codigo: '',
-      tarifa: '',
-      monto: ''
-    },
-    montoTotalLinea: '',
-    impuestoNeto: ''
-
-  }]);
-
-  const handleInputChange = (index, event) => {
-    const values = [...tabla];
-    if (event.target.name === "codigo" || event.target.name === "tarifa" || event.target.name === "monto") {
-      values[index]['impuesto'][event.target.name] = event.target.value;
-    } else {
-      values[index][event.target.name] = event.target.value;
-    }
-    setTabla(values);
-  };
-
-  const handleAddRow = () => {
-    setTabla([...tabla, {
-      numeroLinea: '',
-      codigoServicio: '',
-      codigoComercial: '',
-      tipoCodCom: '',
-      codigo: '',
-      cantidad: '',
-      unidadMedida: '',
-      unidadMedidaComercial: '',
-      detalle: '',
-      precioUnitario: '',
-      montoTotal: '',
-      subtotal: '',
-      impuesto: {
-        codigo: '',
-        tarifa: '',
-        monto: ''
-      },
-      montoTotalLinea: '',
-      impuestoNeto: ''
-    }]);
-  };
-
 
   const handleCodigoSeguridad = (event) => {
     setCodigoSeguridad(event.target.value);
@@ -150,8 +79,8 @@ function FacturaElectronica() {
     setCodMoneda(event.target.value);
   }
 
-  const handletipoCodComCambio = (event) => {
-    settipoCodComCambio(event.target.value);
+  const handleTipoCambio = (event) => {
+    setTipoCambio(event.target.value);
   }
 
   const handleTotalServGravados = (event) => {
@@ -194,10 +123,6 @@ function FacturaElectronica() {
     setTipoCodCom(event.target.value);
   }
 
-  const handleCodigo = (event) => {
-    setCodigo(event.target.value);
-  }
-
   const handleCantidad = (event) => {
     setCantidad(event.target.value);
   }
@@ -226,8 +151,16 @@ function FacturaElectronica() {
     setSubtotal(event.target.value);
   }
 
-  const handleImpuesto = (event) => {
-    setImpuesto({ ...impuesto, [event.target.name]: event.target.value });
+  const handleImpuestoCodigo = (event) => {
+    setImpuestoCodigo(event.target.value);
+  }
+
+  const handleImpuestoTarifa = (event) => {
+    setImpuestoTarifa(event.target.value);
+  }
+
+  const handleImpuestoMonto = (event) => {
+    setImpuestoMonto(event.target.value);
   }
 
   const handleMontoTotalLinea = (event) => {
@@ -247,14 +180,13 @@ function FacturaElectronica() {
       cedulaEmisor,
       cedulaReceptor,
       codMoneda,
-      tipoCodComCambio,
+      tipoCambio,
       totalServGravados,
       totalGravados,
       totalVentas,
       totalVentasNeta,
       totalImpuestos,
       totalComprobante,
-      tabla
     });
 
     // Limpiamos los campos después de enviar el formulario
@@ -264,7 +196,7 @@ function FacturaElectronica() {
     setCedulaEmisor('');
     setCedulaReceptor('');
     setCodMoneda('');
-    settipoCodComCambio('');
+    setTipoCambio('');
     setTotalServGravados('');
     setTotalGravados('');
     setTotalVentas('');
@@ -301,96 +233,12 @@ function FacturaElectronica() {
           <input className="form-input" type="text" value={cedulaReceptor} onChange={handleCedulaReceptor} />
           <button type="button" onClick={handleConsultarCliente}>Consultar Receptor</button>
         </div>
-        <h2>Resumen de la Factura</h2>
-        <div className="form-group">
-          <label className="form-label">Código de Moneda:</label>
-          <input className="form-input" type="text" value={codMoneda} onChange={handleCodMoneda} />
-        </div>
-        <div className="form-group">
-          <label className="form-label">tipoCodCom de Cambio:</label>
-          <input className="form-input" type="text" value={tipoCodComCambio} onChange={handletipoCodComCambio} />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Total de Servicios Gravados:</label>
-          <input className="form-input" type="text" value={totalServGravados} onChange={handleTotalServGravados} />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Total Gravados:</label>
-          <input className="form-input" type="text" value={totalGravados} onChange={handleTotalGravados} />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Total de Ventas:</label>
-          <input className="form-input" type="text" value={totalVentas} onChange={handleTotalVentas} />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Total de Ventas Neta:</label>
-          <input className="form-input" type="text" value={totalVentasNeta} onChange={handleTotalVentasNeta} />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Total de Impuestos:</label>
-          <input className="form-input" type="text" value={totalImpuestos} onChange={handleTotalImpuestos} />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Total del Comprobante:</label>
-          <input className="form-input" type="text" value={totalComprobante} onChange={handleTotalComprobante} />
-        </div>
-        {/* <div className="form-container-table" id="tabla">
-          <h2>Tabla</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Número Línea</th>
-                <th>Código</th>
-                <th>tipoCodCom Cod Com</th>
-                <th>Código Comercial</th>
-                <th>Cantidad</th>
-                <th>Unidad de Medida</th>
-                <th>Unidad de Medida Comercial</th>
-                <th>Detalle</th>
-                <th>Precio Unitario</th>
-                <th>Monto Total</th>
-                <th>SubTotal</th>
-                <th>Código de Impuesto</th>
-                <th>Tarifa de Impuesto</th>
-                <th>Monto de Impuesto</th>
-                <th>Monto Total Linea</th>
-                <th>Impuesto Neto</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tabla.map((item, index) => (
-                <tr key={index}>
-                  <td><input type="text" name="numeroLinea" value={item.numeroLinea} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="codigo" value={item.codigoServicio} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="codigoComercial" value={item.codigoComercial} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="tipoCodComCodCom" value={item.tipoCodCom} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="cantidad" value={item.cantidad} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="unidadMedida" value={item.unidadMedida} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="unidadMedidaComercial" value={item.unidadMedidaComercial} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="detalle" value={item.detalle} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="precioUnitario" value={item.precioUnitario} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="montoTotal" value={item.montoTotal} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="subtotal" value={item.subtotal} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="codigoImpuesto" value={item.impuesto.codigo} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="tarifa" value={item.impuesto.tarifa} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="monto" value={item.impuesto.monto} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="montoTotalLinea" value={item.montoTotalLinea} onChange={event => handleInputChange(index, event)} /></td>
-                  <td><input type="text" name="impuestoNeto" value={item.impuestoNeto} onChange={event => handleInputChange(index, event)} /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-
-
-          <button onClick={handleAddRow}>Agregar fila</button>
-        </div> */}
         <h2>Detalles del Servicio</h2>
         <div className='col'>
           <div>
             <div className="form-group">
               <label className="form-label">Número Línea</label>
-              <input className="form-input" type="text" value={numeroLinea} onChange={handleCodigoServicio} />
+              <input className="form-input" type="text" value={numeroLinea} onChange={handleNumeroLinea} />
             </div>
             <div className="form-group">
               <label className="form-label">Código de Servicio:</label>
@@ -420,28 +268,75 @@ function FacturaElectronica() {
               <label className="form-label">Detalle:</label>
               <input className="form-input" type="text" value={detalle} onChange={handleDetalle} />
             </div>
-
-
           </div>
           <div>
-            <div className="form-group"> <label className="form-label">Precio unitario:</label>
-              <input className="form-input" type="text" value={precioUnitario} onChange={handlePrecioUnitario} /></div>
-            <div className="form-group"><label className="form-label">Monto total:</label>
-              <input className="form-input" type="text" value={montoTotal} onChange={handleMontoTotal} /></div>
-            <div className="form-group"><label className="form-label">Subtotal:</label>
+            <div className="form-group">
+              <label className="form-label">Precio unitario:</label>
+              <input className="form-input" type="text" value={precioUnitario} onChange={handlePrecioUnitario} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Monto total:</label>
+              <input className="form-input" type="text" value={montoTotal} onChange={handleMontoTotal} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Subtotal:</label>
               <input className="form-input" type="text" value={subtotal} onChange={handleSubtotal} /></div>
-            <div className="form-group"><label className="form-label">Código de impuesto:</label>
-              <input className="form-input" type="text" value={impuesto.codigo} onChange={handleImpuesto} /></div>
-            <div className="form-group"><label className="form-label">Tarifa de impuesto:</label>
-              <input className="form-input" type="text" value={impuesto.tarifa} onChange={handleImpuesto} /></div>
-            <div className="form-group"><label className="form-label">Monto de impuesto:</label>
-              <input className="form-input" type="text" value={impuesto.monto} onChange={handleImpuesto} /></div>
-              <div className="form-group"><label className="form-label">Impuesto Neto:</label>
-              <input className="form-input" type="text" value={impuestoNeto} onChange={handleImpuestoNeto} /></div>
-            <div className="form-group"><label className="form-label">Monto total de línea:</label>
-              <input className="form-input" type="text" value={montoTotalLinea} onChange={handleMontoTotalLinea} /></div>
+            <div className="form-group">
+              <label className="form-label">Código de impuesto:</label>
+              <input className="form-input" type="text" value={impuestoCodigo} onChange={handleImpuestoCodigo} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Tarifa de impuesto:</label>
+              <input className="form-input" type="text" value={impuestoTarifa} onChange={handleImpuestoTarifa} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Monto de impuesto:</label>
+              <input className="form-input" type="text" value={impuestoMonto} onChange={handleImpuestoMonto} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Impuesto Neto:</label>
+              <input className="form-input" type="text" value={impuestoNeto} onChange={handleImpuestoNeto} />
+            </div>
+            <div className="form-group"
+            ><label className="form-label">Monto total de línea:</label>
+              <input className="form-input" type="text" value={montoTotalLinea} onChange={handleMontoTotalLinea} />
+            </div>
           </div>
         </div>
+        <h2>Resumen de la Factura</h2>
+        <div className="form-group">
+          <label className="form-label">Código de Moneda:</label>
+          <input className="form-input" type="text" value={codMoneda} onChange={handleCodMoneda} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Tipo de Cambio:</label>
+          <input className="form-input" type="text" value={tipoCambio} onChange={handleTipoCambio} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total de Servicios Gravados:</label>
+          <input className="form-input" type="text" value={totalServGravados} onChange={handleTotalServGravados} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total Gravados:</label>
+          <input className="form-input" type="text" value={totalGravados} onChange={handleTotalGravados} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total de Ventas:</label>
+          <input className="form-input" type="text" value={totalVentas} onChange={handleTotalVentas} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total de Ventas Neta:</label>
+          <input className="form-input" type="text" value={totalVentasNeta} onChange={handleTotalVentasNeta} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total de Impuestos:</label>
+          <input className="form-input" type="text" value={totalImpuestos} onChange={handleTotalImpuestos} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Total del Comprobante:</label>
+          <input className="form-input" type="text" value={totalComprobante} onChange={handleTotalComprobante} />
+        </div>
+
         <button type="submit" className="submit-button">Agregar Factura</button>
       </form>
     </div>

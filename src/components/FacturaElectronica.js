@@ -218,6 +218,8 @@ function FacturaElectronica() {
       console.log(response);
       try {
         clave = response.resp.clave;
+        const fechaEmision = new Date();
+        console.log(fechaEmision);
         const formData = {
           //MODULO Y ACCION
           w: "genXML",
@@ -226,7 +228,7 @@ function FacturaElectronica() {
           clave: clave,
           codigo_actividad: codigoActividad,
           consecutivo: numeroConsecutivo,
-          fecha_emision: "2024-04-03T15:42:17-06:00",
+          fecha_emision: fechaEmision,
           // EMISOR
           emisor_nombre: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Nombre : '',
           emisor_tipo_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.TipoCed : '',

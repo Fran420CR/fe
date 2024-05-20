@@ -1,25 +1,28 @@
 // App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Dashboard from './components/Dashboard';
+import Layout from './components/Layout';
 import AgregarClientes from './components/AgregarClientes';
 import AgregarProveedores from './components/AgregarProveedores';
 import FacturaElectronica from './components/FacturaElectronica';
+import LoginForm from './components/LogIn';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function App() {
   return (
     <Router>
-      <div>
-        <Dashboard />
-        <Routes>
-          <Route path="/agregar-clientes" element={<AgregarClientes />} />
-          <Route path="/agregar-proveedores" element={<AgregarProveedores />} />
-          <Route path="/factura-electronica" element={<FacturaElectronica />} />
-          {/* Ruta por defecto al iniciar la app */}
-          <Route path="/" element={<AgregarClientes />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<LoginForm />} />
+        <Route
+          path="/"
+          element={<ProtectedRoute element={<Layout />} />}
+        >
+          <Route path="agregar-clientes" element={<AgregarClientes />} />
+          <Route path="agregar-proveedores" element={<AgregarProveedores />} />
+          <Route path="factura-electronica" element={<FacturaElectronica />} />
+        </Route>
+      </Routes>
     </Router>
   );
 }

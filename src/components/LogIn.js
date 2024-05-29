@@ -1,4 +1,3 @@
-// LoginForm.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +10,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/login', {
+      const response = await fetch('http://localhost:3001/api/auth/login', {  // Ruta actualizada mieo
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -24,7 +23,7 @@ const LoginForm = () => {
         localStorage.setItem('token', data.token);
         setError('');
         alert('Login successful');
-        navigate('/agregar-clientes'); // Redirige al dashboard después de un inicio de sesión exitoso
+        navigate('/agregar-clientes');  // Redirige al dashboard después de un inicio de sesión exitoso
       } else {
         setError(data.message);
       }
@@ -43,7 +42,7 @@ const LoginForm = () => {
         </div>
         <div className="form-group">
           <label className="form-label">Password</label>
-          <input type="password"  className="form-input" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" className="form-input" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <button className="submit-button" type="submit">Login</button>

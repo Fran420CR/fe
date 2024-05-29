@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 function AgregarClientes() {
     const [nombre, setNombre] = useState('');
     const [tipoCed, setTipocedula] = useState('');
-    const [cedula, setcedula] = useState('');
+    const [cedula, setCedula] = useState('');
     const [nombreComercial, setNombreComercial] = useState('');
     const [provincia, setProvincia] = useState('');
     const [canton, setCanton] = useState('');
@@ -26,7 +26,7 @@ function AgregarClientes() {
     }
 
     const handleCedulaChange = (event) => {
-        setcedula(event.target.value);
+        setCedula(event.target.value);
     }
 
     const handleNombreComercialChange = (event) => {
@@ -79,14 +79,13 @@ function AgregarClientes() {
         };
 
         try {
-            const response = await fetch('http://localhost:3001/agregarCliente', {
+            const response = await fetch('http://localhost:3001/api/clientes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-
 
             if (response.ok) {
                 const responseData = await response.json();
@@ -95,7 +94,7 @@ function AgregarClientes() {
                 // Limpiar campos después de una respuesta exitosa si es necesario
                 setNombre('');
                 setTipocedula('');
-                setcedula('');
+                setCedula('');
                 setNombreComercial('');
                 setProvincia('');
                 setCanton('');
@@ -120,10 +119,9 @@ function AgregarClientes() {
         }, 3000);
     }
 
-
     return (
         <div className="form-container"> {/* Añadimos una clase contenedora para aplicar estilos */}
-            <h2>Cliente</h2>
+            <h2>Agregar Cliente</h2>
             <form onSubmit={handleSubmit}>
                 {/* Cada div envolvente para el input y label se agrega con una clase específica para estilos */}
                 <div className="form-group">

@@ -38,7 +38,7 @@ function FacturaElectronica() {
 
   const handleConsultarCliente = () => {
     // Realizar la solicitud de datos del cliente utilizando cedulaReceptor
-    fetch(`http://localhost:3001/datosCliente?cedula=${cedulaReceptor}`)
+    fetch(`/api/clientes/${cedulaReceptor}`)
       .then(response => response.json())
       .then(data => {
         console.log('Datos del cliente obtenidos:', data);
@@ -52,7 +52,7 @@ function FacturaElectronica() {
 
   const handleConsultarProveedor = () => {
     // Realizar la solicitud de datos del cliente utilizando cedulaReceptor
-    fetch(`http://localhost:3001/datosProveedor?cedula=${cedulaEmisor}`)
+    fetch(`/api/proveedores/${cedulaEmisor}`)
       .then(response => response.json())
       .then(data => {
         console.log('Datos del proveedor obtenidos:', data);
@@ -183,21 +183,6 @@ function FacturaElectronica() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Factura Electronica agregada:', {
-      codigoSeguridad,
-      codigoActividad,
-      numeroConsecutivo,
-      cedulaEmisor,
-      cedulaReceptor,
-      codMoneda,
-      tipoCambio,
-      totalServGravados,
-      totalGravados,
-      totalVentas,
-      totalVentasNeta,
-      totalImpuestos,
-      totalComprobante,
-    });
 
     let clave = "";
     const claveData = {
@@ -214,104 +199,105 @@ function FacturaElectronica() {
       sucursal: "001"
     };
 
-    solicitarClave(claveData).then(response => {
-      console.log(response);
-      try {
-        clave = response.resp.clave;
-        const fechaEmision = new Date();
-        console.log(fechaEmision);
-        const formData = {
-          //MODULO Y ACCION
-          w: "genXML",
-          r: "gen_xml_fe",
-          // DATA
-          clave: clave,
-          codigo_actividad: codigoActividad,
-          consecutivo: numeroConsecutivo,
-          fecha_emision: fechaEmision,
-          // EMISOR
-          emisor_nombre: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Nombre : '',
-          emisor_tipo_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.TipoCed : '',
-          emisor_num_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Cedula : '',
-          emisor_nombre_comercial: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.NombreComercial : '',
-          emisor_provincia: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Provincia : '',
-          emisor_canton: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Canton : '',
-          emisor_distrito: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Distrito : '',
-          emisor_otras_senas: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.OtrasSenas : '',
-          emisor_cod_pais_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.CodigoPaisReceptor : '',
-          emisor_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Telefono : '',
-          emisor_email: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Email : '',
-          // RECEPTOR
-          receptor_nombre: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Nombre : '',
-          receptor_tipo_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.TipoCed : '',
-          receptor_num_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Cedula : '',
-          receptor_nombre_comercial: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.NombreComercial : '',
-          receptor_provincia: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Provincia : '',
-          receptor_canton: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Canton : '',
-          receptor_distrito: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Distrito : '',
-          receptor_otras_senas: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.OtrasSenas : '',
-          receptor_cod_pais_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.CodigoPaisReceptor : '',
-          receptor_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Telefono : '',
-          receptor_email: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Email : '',
-          // RESUMEN FACTURA
-          cod_moneda: codMoneda,
-          tipo_cambio: tipoCambio,
-          total_serv_gravados: totalServGravados,
-          totalGravados: totalGravados,
-          total_ventas: totalVentas,
-          total_ventas_neta: totalVentasNeta,
-          total_impuestos: totalImpuestos,
-          total_comprobante: totalComprobante,
+    accionAPIHAcienda(claveData)
+      .then(response => {
+        try {
 
-          detalles: {
-            1: {
-              numeroLinea: numeroLinea,
-              codigo: codigoServicio,
-              codigoComercial: [
-                {
-                  tipo: tipoCodCom,
-                  codigo: codigoComercial
-                }
-              ],
-              cantidad: cantidad,
-              unidadMedida: unidadMedida,
-              unidadMedidaComercial: unidadMedidaComercial,
-              detalle: detalle,
-              precioUnitario: precioUnitario,
-              montoTotal: montoTotal,
-              subtotal: subtotal,
-              impuesto: {
-                1: {
-                  codigo: impuestoCodigo,
-                  tarifa: impuestoTarifa,
-                  monto: impuestoMonto
-                }
-              },
-              montoTotalLinea: montoTotalLinea,
-              impuestoNeto: impuestoNeto
+          clave = response.resp.clave;
+          const fechaEmision = new Date();
+
+          const formData = {
+            //MODULO Y ACCION
+            w: "genXML",
+            r: "gen_xml_fe",
+            // DATA
+            clave: clave,
+            codigo_actividad: codigoActividad,
+            consecutivo: numeroConsecutivo,
+            fecha_emision: fechaEmision,
+            // EMISOR
+            emisor_nombre: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Nombre : '',
+            emisor_tipo_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.TipoCed : '',
+            emisor_num_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Cedula : '',
+            emisor_nombre_comercial: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.NombreComercial : '',
+            emisor_provincia: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Provincia : '',
+            emisor_canton: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Canton : '',
+            emisor_distrito: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Distrito : '',
+            emisor_otras_senas: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.OtrasSenas : '',
+            emisor_cod_pais_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.CodigoPaisReceptor : '',
+            emisor_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Telefono : '',
+            emisor_email: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Email : '',
+            // RECEPTOR
+            receptor_nombre: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Nombre : '',
+            receptor_tipo_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.TipoCed : '',
+            receptor_num_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Cedula : '',
+            receptor_nombre_comercial: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.NombreComercial : '',
+            receptor_provincia: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Provincia : '',
+            receptor_canton: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Canton : '',
+            receptor_distrito: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Distrito : '',
+            receptor_otras_senas: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.OtrasSenas : '',
+            receptor_cod_pais_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.CodigoPaisReceptor : '',
+            receptor_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Telefono : '',
+            receptor_email: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Email : '',
+            // RESUMEN FACTURA
+            cod_moneda: codMoneda,
+            tipo_cambio: tipoCambio,
+            total_serv_gravados: totalServGravados,
+            totalGravados: totalGravados,
+            total_ventas: totalVentas,
+            total_ventas_neta: totalVentasNeta,
+            total_impuestos: totalImpuestos,
+            total_comprobante: totalComprobante,
+
+            detalles: {
+              1: {
+                numeroLinea: numeroLinea,
+                codigo: codigoServicio,
+                codigoComercial: [
+                  {
+                    tipo: tipoCodCom,
+                    codigo: codigoComercial
+                  }
+                ],
+                cantidad: cantidad,
+                unidadMedida: unidadMedida,
+                unidadMedidaComercial: unidadMedidaComercial,
+                detalle: detalle,
+                precioUnitario: precioUnitario,
+                montoTotal: montoTotal,
+                subtotal: subtotal,
+                impuesto: {
+                  1: {
+                    codigo: impuestoCodigo,
+                    tarifa: impuestoTarifa,
+                    monto: impuestoMonto
+                  }
+                },
+                montoTotalLinea: montoTotalLinea,
+                impuestoNeto: impuestoNeto
+              }
             }
-          }
 
 
-          // Completar los datos del emisor y del receptor con los datos almacenados en la variable global
+            // Completar los datos del emisor y del receptor con los datos almacenados en la variable global
 
-        };
+          };
 
-        console.log(formData);
+          console.log(formData);
 
-        formData.detalles = JSON.stringify(formData.detalles);
+          formData.detalles = JSON.stringify(formData.detalles);
 
-        const jsonFormData = JSON.stringify(formData);
+          const jsonFormData = JSON.stringify(formData);
 
-        console.log(jsonFormData);
+          console.log(jsonFormData);
 
-         enviarJSON(formData);
-      } catch (error) {
-        console.error("Error al analizar la respuesta:", error);
-      }
-    }).catch(error => {
-      console.error(error);
-    });
+          accionAPIHAcienda(formData);
+        } catch (error) {
+          console.error("Error al analizar la respuesta:", error);
+        }
+      }).catch(error => {
+        console.error(error);
+      });
 
 
 
@@ -331,32 +317,8 @@ function FacturaElectronica() {
     // setTotalComprobante('');
   }
 
-  async function enviarJSON(formData) {
-
-    const url = "http://localhost/APIHacienda/www/api.php";
-
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al enviar los datos');
-      }
-
-      const jsonResponse = await response.json();
-      console.log('Respuesta del servidor:', jsonResponse);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-
-  async function solicitarClave(claveData) {
-    const url = "http://localhost/APIHacienda/www/api.php";
+  async function accionAPIHAcienda(data) {
+    const url = "http://localhost:3001/api/hacienda/accion";
     let jsonResponse = null;
 
     try {
@@ -365,7 +327,7 @@ function FacturaElectronica() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(claveData)
+        body: JSON.stringify(data)
       });
 
       if (!response.ok) {

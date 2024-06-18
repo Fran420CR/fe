@@ -6,6 +6,8 @@ import AgregarClientes from './components/AgregarClientes';
 import AgregarProveedores from './components/AgregarProveedores';
 import FacturaElectronica from './components/FacturaElectronica';
 import LoginForm from './components/LogIn';
+import NotaCredito from './components/NotaCredito';
+import NotaDebito from './components/NotaDebito';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -21,6 +23,8 @@ function App() {
           <Route path="agregar-clientes" element={<AgregarClientes />} />
           <Route path="agregar-proveedores" element={<AgregarProveedores />} />
           <Route path="factura-electronica" element={<FacturaElectronica />} />
+          <Route path="nota-credito" element={<NotaCredito />} />
+          <Route path="nota-debito" element={<NotaDebito />} />
         </Route>
       </Routes>
     </Router>

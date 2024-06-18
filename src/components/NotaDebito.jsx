@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function FacturaElectronica() {
+function NotaDebito() {
   const [codigoSeguridad, setCodigoSeguridad] = useState('');
   const [codigoActividad, setCodigoActividad] = useState('');
   const [numeroConsecutivo, setNumeroConsecutivo] = useState('');
@@ -37,6 +37,11 @@ function FacturaElectronica() {
     cliente: null,
     proveedor: null
   });
+  const [refeTipoDocumento, setRefeTipoDocumento] = useState('');
+  const [refeNumero, setRefeNumero] = useState('');
+  const [refeFechaEmision, setRefeFechaEmision] = useState('');
+  const [refeCodigo, setRefeCodigo] = useState('');
+  const [refeRazon, setRefeRazon] = useState('');
 
 
   const handleConsultarCliente = () => {
@@ -192,6 +197,26 @@ function FacturaElectronica() {
     setImpuestoNeto(event.target.value);
   }
 
+  const handleRefeTipoDocumento = (event) => {
+    setRefeTipoDocumento(event.target.value);
+  }
+
+  const handleRefeNumero = (event) => {
+    setRefeNumero(event.target.value);
+  }
+
+  const handleRefeFechaEmision = (event) => {
+    setRefeFechaEmision(event.target.value);
+  }
+
+  const handleRefeCodigo = (event) => {
+    setRefeCodigo(event.target.value);
+  }
+
+  const handleRefeRazon = (event) => {
+    setRefeRazon(event.target.value);
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -205,7 +230,7 @@ function FacturaElectronica() {
       consecutivo: numeroConsecutivo,
       situacion: "normal",
       codigoSeguridad: codigoSeguridad,
-      tipoDocumento: "FE",
+      tipoDocumento: "ND",
       terminal: "00001",
       sucursal: "001"
     };
@@ -220,7 +245,7 @@ function FacturaElectronica() {
           const formData = {
             //MODULO Y ACCION
             w: "genXML",
-            r: "gen_xml_fe",
+            r: "gen_xml_nd",
             // DATA
             clave: clave,
             codigo_actividad: codigoActividad,
@@ -291,9 +316,13 @@ function FacturaElectronica() {
                 impuestoNeto: impuestoNeto,
                 montoTotalLinea: montoTotalLinea
               }
-            }
+            },
 
-
+            infoRefeTipoDoc: refeTipoDocumento,
+            infoRefeNumero: refeNumero,
+            infoRefeFechaEmision: refeFechaEmision,
+            infoRefeCodigo: refeCodigo,
+            infoRefeRazon: refeRazon
             // Completar los datos del emisor y del receptor con los datos almacenados en la variable global
 
           };
@@ -361,7 +390,7 @@ function FacturaElectronica() {
 
   return (
     <div className="form-container">
-      <h2>Importante</h2>
+      <h2>Nota Débito</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label className="form-label">Código de Seguridad:</label>
@@ -503,10 +532,32 @@ function FacturaElectronica() {
           <input className="form-input" type="text" value={totalComprobante} onChange={handleTotalComprobante} />
         </div>
 
+        <h2>Información de Referencia</h2>
+        <div className="form-group">
+          <label className="form-label">Tipo documento:</label>
+          <input className="form-input" type="text" value={refeTipoDocumento} onChange={handleRefeTipoDocumento} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Numero:</label>
+          <input className="form-input" type="text" value={refeNumero} onChange={handleRefeNumero} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Fecha de Emisión:</label>
+          <input className="form-input" type="text" value={refeFechaEmision} onChange={handleRefeFechaEmision} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Código:</label>
+          <input className="form-input" type="text" value={refeCodigo} onChange={handleRefeCodigo} />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Razón:</label>
+          <input className="form-input" type="text" value={refeRazon} onChange={handleRefeRazon} />
+        </div>
+
         <button type="submit" className="submit-button">Agregar Factura</button>
       </form>
     </div>
   );
 }
 
-export default FacturaElectronica;
+export default NotaDebito;

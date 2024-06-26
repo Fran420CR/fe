@@ -37,6 +37,8 @@ function FacturaElectronica() {
     cliente: null,
     proveedor: null
   });
+  const [consultarCliente, setConsultarCliente] = useState(true);
+
 
 
   const handleConsultarCliente = () => {
@@ -55,7 +57,7 @@ function FacturaElectronica() {
 
   const handleConsultarProveedor = () => {
     // Realizar la solicitud de datos del cliente utilizando cedulaReceptor
-    fetch(`/api/proveedores/${cedulaEmisor}`)
+    fetch(`http://localhost:3001/api/proveedores/${cedulaReceptor}`)
       .then(response => response.json())
       .then(data => {
         console.log('Datos del proveedor obtenidos:', data);
@@ -227,17 +229,17 @@ function FacturaElectronica() {
             consecutivo: numeroConsecutivo,
             fecha_emision: fechaEmision,
             // EMISOR
-            emisor_nombre: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Nombre : '',
-            emisor_tipo_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.TipoCed : '',
-            emisor_num_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Cedula : '',
-            emisor_nombre_comercial: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.NombreComercial : '',
-            emisor_provincia: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Provincia : '',
-            emisor_canton: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Canton : '',
-            emisor_distrito: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Distrito : '',
-            emisor_otras_senas: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.OtrasSenas : '',
-            emisor_cod_pais_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.CodigoPaisReceptor : '',
-            emisor_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Telefono : '',
-            emisor_email: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Email : '',
+            emisor_nombre: "CABLEADOS Y SISTEMAS SF SOCIEDAD ANÓNIMA",
+            emisor_tipo_identif: "02",
+            emisor_num_identif: "3101313137",
+            emisor_nombre_comercial: "CABLEADOS Y SISTEMAS SF SOCIEDAD ANÓNIMA",
+            emisor_provincia: "4",
+            emisor_canton: "03",
+            emisor_distrito: "02",
+            emisor_otras_senas: "Contiguo pastas vigui, centro comercial plaza Quizarco, segundo piso",
+            emisor_cod_pais_tel: "506",
+            emisor_tel: "22444746",
+            emisor_email: "cableadosystemas@yahoo.com",
             // RECEPTOR
             receptor_nombre: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Nombre : '',
             receptor_tipo_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.TipoCed : '',
@@ -385,8 +387,14 @@ function FacturaElectronica() {
         <div className="form-group">
           <label className="form-label">Cédula del Receptor:</label>
           <input className="form-input" type="text" value={cedulaReceptor} onChange={handleCedulaReceptor} />
-          <button type="button" onClick={handleConsultarCliente}>Consultar Receptor</button>
+          <button type="button" onClick={consultarCliente ? handleConsultarCliente : handleConsultarProveedor}>
+            {consultarCliente ? 'Consultar Cliente' : 'Consultar Proveedor'}
+          </button>
+          <button type="button" onClick={() => setConsultarCliente(!consultarCliente)}>
+            {consultarCliente ? 'Cambiar a Consultar Proveedor' : 'Cambiar a Consultar Cliente'}
+          </button>
         </div>
+
         <div className="form-group">
           <label className="form-label">Condición de Venta:</label>
           <input className="form-input" type="text" value={condicionVenta} onChange={handleCondicionVenta} />

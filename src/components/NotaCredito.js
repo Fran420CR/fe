@@ -4,7 +4,6 @@ function NotaCredito() {
   const [codigoSeguridad, setCodigoSeguridad] = useState('');
   const [codigoActividad, setCodigoActividad] = useState('');
   const [numeroConsecutivo, setNumeroConsecutivo] = useState('');
-  const [cedulaEmisor, setCedulaEmisor] = useState('');
   const [cedulaReceptor, setCedulaReceptor] = useState('');
   const [condicionVenta, setCondicionVenta] = useState('');
   const [plazoCredito, setPlazoCredito] = useState('');
@@ -33,9 +32,9 @@ function NotaCredito() {
   const [totalVentasNeta, setTotalVentasNeta] = useState('');
   const [totalImpuestos, setTotalImpuestos] = useState('');
   const [totalComprobante, setTotalComprobante] = useState('');
-  const [datosClienteProveedor, setDatosClienteProveedor] = useState({
-    cliente: null,
-    proveedor: null
+  const [tipoReceptor, setTipoReceptor] = useState('clientes'); // Estado para el RadioGroup
+  const [datosReceptor, setDatosReceptor] = useState({
+    receptor: null
   });
   const [refeTipoDocumento, setRefeTipoDocumento] = useState('');
   const [refeNumero, setRefeNumero] = useState('');
@@ -43,33 +42,17 @@ function NotaCredito() {
   const [refeCodigo, setRefeCodigo] = useState('');
   const [refeRazon, setRefeRazon] = useState('');
 
-
-  const handleConsultarCliente = () => {
-    // Realizar la solicitud de datos del cliente utilizando cedulaReceptor
-    fetch(`http://localhost:3001/api/clientes/${cedulaReceptor}`)
+  const handleConsultarReceptor = () => {
+    fetch(`http://localhost:3001/api/${tipoReceptor}/${cedulaReceptor}`)
       .then(response => response.json())
       .then(data => {
         console.log('Datos del cliente obtenidos:', data);
-        setDatosClienteProveedor(prevState => ({
+        setDatosReceptor(prevState => ({
           ...prevState,
-          cliente: data
+          receptor: data
         }));
       })
       .catch(error => console.error('Error al obtener los datos del cliente:', error));
-  };
-
-  const handleConsultarProveedor = () => {
-    // Realizar la solicitud de datos del cliente utilizando cedulaReceptor
-    fetch(`/api/proveedores/${cedulaEmisor}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log('Datos del proveedor obtenidos:', data);
-        setDatosClienteProveedor(prevState => ({
-          ...prevState,
-          proveedor: data
-        }));
-      })
-      .catch(error => console.error('Error al obtener los datos del proveedor:', error));
   };
 
 
@@ -84,11 +67,7 @@ function NotaCredito() {
   const handleNumeroConsecutivo = (event) => {
     setNumeroConsecutivo(event.target.value);
   }
-
-  const handleCedulaEmisor = (event) => {
-    setCedulaEmisor(event.target.value);
-  }
-
+  
   const handleCedulaReceptor = (event) => {
     setCedulaReceptor(event.target.value);
   }
@@ -252,29 +231,30 @@ function NotaCredito() {
             consecutivo: numeroConsecutivo,
             fecha_emision: fechaEmision,
             // EMISOR
-            emisor_nombre: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Nombre : '',
-            emisor_tipo_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.TipoCed : '',
-            emisor_num_identif: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Cedula : '',
-            emisor_nombre_comercial: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.NombreComercial : '',
-            emisor_provincia: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Provincia : '',
-            emisor_canton: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Canton : '',
-            emisor_distrito: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Distrito : '',
-            emisor_otras_senas: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.OtrasSenas : '',
-            emisor_cod_pais_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.CodigoPaisReceptor : '',
-            emisor_tel: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Telefono : '',
-            emisor_email: datosClienteProveedor.proveedor ? datosClienteProveedor.proveedor.Email : '',
+            emisor_nombre: "CABLEADOS Y SISTEMAS SF SOCIEDAD ANÓNIMA",
+            emisor_tipo_identif: "02",
+            emisor_num_identif: "3101313137",
+            emisor_nombre_comercial: "CABLEADOS Y SISTEMAS SF SOCIEDAD ANÓNIMA",
+            emisor_provincia: "4",
+            emisor_canton: "03",
+            emisor_distrito: "02",
+            emisor_otras_senas: "Contiguo pastas vigui, centro comercial plaza Quizarco, segundo piso",
+            emisor_cod_pais_tel: "506",
+            emisor_tel: "22444746",
+            emisor_email: "cableadosystemas@yahoo.com",
             // RECEPTOR
-            receptor_nombre: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Nombre : '',
-            receptor_tipo_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.TipoCed : '',
-            receptor_num_identif: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Cedula : '',
-            receptor_nombre_comercial: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.NombreComercial : '',
-            receptor_provincia: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Provincia : '',
-            receptor_canton: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Canton : '',
-            receptor_distrito: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Distrito : '',
-            receptor_otras_senas: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.OtrasSenas : '',
-            receptor_cod_pais_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.CodigoPaisReceptor : '',
-            receptor_tel: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Telefono : '',
-            receptor_email: datosClienteProveedor.cliente ? datosClienteProveedor.cliente.Email : '',
+            receptor_nombre: datosReceptor.receptor ? datosReceptor.receptor.Nombre : '',
+            receptor_tipo_identif: datosReceptor.receptor ? datosReceptor.receptor.TipoCed : '',
+            receptor_num_identif: datosReceptor.receptor ? datosReceptor.receptor.Cedula : '',
+            receptor_nombre_comercial: datosReceptor.receptor ? datosReceptor.receptor.NombreComercial : '',
+            receptor_provincia: datosReceptor.receptor ? datosReceptor.receptor.Provincia : '',
+            receptor_canton: datosReceptor.receptor ? datosReceptor.receptor.Canton : '',
+            receptor_distrito: datosReceptor.receptor ? datosReceptor.receptor.Distrito : '',
+            receptor_otras_senas: datosReceptor.receptor ? datosReceptor.receptor.OtrasSenas : '',
+            receptor_cod_pais_tel: datosReceptor.receptor ? datosReceptor.receptor.CodigoPaisReceptor : '',
+            receptor_tel: datosReceptor.receptor ? datosReceptor.receptor.Telefono : '',
+            receptor_email: datosReceptor.receptor ? datosReceptor.receptor.Email : '',
+            //
             //
             condicion_venta: condicionVenta,
             plazo_credito: plazoCredito,
@@ -404,17 +384,38 @@ function NotaCredito() {
           <label className="form-label">Número de Consecutivo:</label>
           <input className="form-input" type="text" value={numeroConsecutivo} onChange={handleNumeroConsecutivo} />
         </div>
-        <h2>Emisor</h2>
-        <div className="form-group">
-          <label className="form-label">Cédula del Emisor:</label>
-          <input className="form-input" type="text" value={cedulaEmisor} onChange={handleCedulaEmisor} />
-          <button type="button" onClick={handleConsultarProveedor}>Consultar Proveedor</button>
-        </div>
         <h2>Receptor</h2>
+        <div className="form-group">
+          <label className="form-label">Tipo de Receptor:</label>
+          <div>
+            <input
+              type="radio"
+              id="cliente"
+              name="tipoReceptor"
+              value="cliente"
+              checked={tipoReceptor === 'clientes'}
+              onChange={() => setTipoReceptor('clientes')}
+            />
+            <label htmlFor="cliente">Cliente</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="proveedor"
+              name="tipoReceptor"
+              value="proveedor"
+              checked={tipoReceptor === 'proveedores'}
+              onChange={() => setTipoReceptor('proveedores')}
+            />
+            <label htmlFor="proveedor">Proveedor</label>
+          </div>
+        </div>
         <div className="form-group">
           <label className="form-label">Cédula del Receptor:</label>
           <input className="form-input" type="text" value={cedulaReceptor} onChange={handleCedulaReceptor} />
-          <button type="button" onClick={handleConsultarCliente}>Consultar Receptor</button>
+          <button type="button" onClick={handleConsultarReceptor}>
+            Consultar Receptor
+          </button>
         </div>
         <div className="form-group">
           <label className="form-label">Condición de Venta:</label>

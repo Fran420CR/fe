@@ -303,8 +303,7 @@ function NotaDebito() {
             infoRefeFechaEmision: refeFechaEmision,
             infoRefeCodigo: refeCodigo,
             infoRefeRazon: refeRazon
-            // Completar los datos del emisor y del receptor con los datos almacenados en la variable global
-
+    
           };
 
           console.log(formData);

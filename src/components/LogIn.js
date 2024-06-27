@@ -10,7 +10,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/api/auth/login', {  // Ruta actualizada mieo
+      const response = await fetch('http://localhost:3001/api/auth/login', {  // Ruta actualizada
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
